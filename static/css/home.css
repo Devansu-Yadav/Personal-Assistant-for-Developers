@@ -9,6 +9,9 @@ body #box{
 body #box h1{
     font-size: 60px;
     text-align: center;
+    color: #38ef7d;
+    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 2px;
 }
 
 body #box form{
@@ -20,14 +23,38 @@ body #box form{
 
 body #box form input{
     margin-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 20px;
-    height: 40px;
+    font-size: 18px;
     width: -webkit-fill-available;
     border-radius: 30px;    
 }
 
 body #box form button{
-    height: 40px;
-    width: 90px;
-    border-radius: 30px;
+    background: transparent;
+}
+
+body #box form .fa-search{
+    font-size: 40px;
+    color: white;
+}
+
+body #box form .fa-search:hover{
+    color: #38ef7d;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: black;
+    opacity: 1; /* Firefox */
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: black;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: black;
 }
