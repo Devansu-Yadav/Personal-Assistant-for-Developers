@@ -1,0 +1,33 @@
+body div{
+    padding-top: 60px;
+}
+
+body #box{
+    padding: 5% 0
+}
+
+body #box h1{
+    font-size: 60px;
+    text-align: center;
+}
+
+body #box form{
+    display: flex;
+    margin-top: 10px;
+    padding: 0 25%;
+    justify-content: space-evenly;
+}
+
+body #box form input{
+    margin-right: 20px;
+    padding-left: 20px;
+    height: 40px;
+    width: -webkit-fill-available;
+    border-radius: 30px;    
+}
+
+body #box form button{
+    height: 40px;
+    width: 90px;
+    border-radius: 30px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" 
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/essentials.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/nav.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/sidepanel.css')}}">
+    
+    <title>Home</title>
+
+    <head>
+        <style>
+
+        </style>
+    </head>
+<body>
+    <nav>
+        <a><i class="fa fa-bars" onclick="openNav()"></i></a>
+        <a href="">Home</a>
+        <a href="#">Sign In</a>
+        <a href="#">Logout</a>
+    </nav>    
+
+    <div id="mySidepanel" class="sidepanel">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Settings</a>
+    </div>
+
+    <div>
+        <div id="box">    
+            <h1>Gooogle</h1>
+            <form action="/">
+                <input type="text" placeholder="Search...">
+                <button type="submit"><p style="-webkit-background-clip: text; color: #7f00ff;">SEARCH</p></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Open SideBar -->
+    <script>
+        /* Set the width of the sidebar to 250px (show it) */
+        function openNav() {
+            document.getElementById("mySidepanel").style.width = "250px";
+        }
+
+        /* Set the width of the sidebar to 0 (hide it) */
+        function closeNav() {
+            document.getElementById("mySidepanel").style.width = "0";
+        }
+    </script>
+</body>
+</html>
