@@ -19,38 +19,63 @@
 <body>
     <nav>
         <a><i class="fa fa-bars" onclick="openNav()"></i></a>
-        <a href="">Home</a>
-        <a href="#">Sign In</a>
-        <a href="#">Logout</a>
+        <a href="{{url_for('home')}}">Home</a>
+        <a style="display: {{display_login}};" href="{{url_for('login')}}">Log In</a>
+        <a style="display: {{display_logout}};" href="{{url_for('logout')}}">Logout</a>
+        <a style="display: {{display_signup}};" href="{{url_for('signup')}}">Sign up</a>
     </nav>    
 
     <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">About</a>
-        <a href="#">Settings</a>
+        <a style="display: {{display_login}};" href="{{url_for('login')}}">Log In</a>
+        <a style="display: {{display_logout}};" href="{{url_for('logout')}}">Logout</a>
+        <a style="display: {{display_signup}};" href="{{url_for('signup')}}">Sign up</a>
+        <a href="{{url_for('settings')}}">Settings</a>
+        <a href="{{url_for('help')}}">Help</a>
     </div>
 
     <div>
         <div id="box">    
-            <h1>Gooogle</h1>
+            <h1>Assist</h1>
             <form action="/">
-                <input type="text" placeholder="Search...">
-                <button type="submit"><p style="-webkit-background-clip: text; color: #7f00ff;">SEARCH</p></button>
+                <input id="search-bar" type="text" placeholder="Search..." value="{{query}}">
+                <button type="submit" id="search-button"><i class="fa fa-search"></i></button>
+                <button type="button" id="mic" onclick="">
+                    <svg class="HPVvwb" focusable="false" style="height: 42px; width: 50px; margin-left: 10px; transform: translateY(5px);" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m12 15c1.66 0 3-1.31 3-2.97v-7.02c0-1.66-1.34-3.01-3-3.01s-3 1.34-3 3.01v7.02c0 1.66 1.34 2.97 3 2.97z" fill="#4285f4"></path>
+                        <path d="m11 18.08h2v3.92h-2z" fill="#34a853"></path><path d="m7.05 16.87c-1.27-1.33-2.05-2.83-2.05-4.87h2c0 1.45 0.56 2.42 1.47 3.38v0.32l-1.15 1.18z" fill="#f4b400"></path>
+                        <path d="m12 16.93a4.97 5.25 0 0 1 -3.54 -1.55l-1.41 1.49c1.26 1.34 3.02 2.13 4.95 2.13 3.87 0 6.99-2.92 6.99-7h-1.99c0 2.92-2.24 4.93-5 4.93z" fill="#ea4335"></path>
+                    </svg>
+                </button>
             </form>
         </div>
+
+        <ul id="messages"></ul>
     </div>
 
     <!-- Open SideBar -->
-    <script>
-        /* Set the width of the sidebar to 250px (show it) */
-        function openNav() {
-            document.getElementById("mySidepanel").style.width = "250px";
-        }
+    <script src="static/js/panel.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        var socket = io.connect('http://127.0.0.1:5000');
 
-        /* Set the width of the sidebar to 0 (hide it) */
-        function closeNav() {
-            document.getElementById("mySidepanel").style.width = "0";
-        }
-    </script>
+        socket.on('connect', function() {
+            socket.send('connected');
+        });
+
+        socket.on('listen', function(msg) {
+            $("#messages").append('<li>' + msg + '</li>');
+            alert("hi " + msg)
+        });
+
+        $("#search-button").on('click', function(){
+            socket.send($("#search-bar").val());
+            $('#search-bar').val('');
+        });
+    });
+</script>
 </body>
 </html>
