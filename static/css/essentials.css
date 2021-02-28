@@ -18,8 +18,8 @@ li{
 }
 
 input, button{
-    outline: none;
-    border: none;
+    outline: none !important;
+    border: none !important;
 }
 
 button{
