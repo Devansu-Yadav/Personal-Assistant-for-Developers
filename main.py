@@ -8,8 +8,6 @@ from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from urllib.parse import *
-from assistant import *
-from flask_socketio import SocketIO, send
 
 
 app = Flask(__name__)
@@ -17,9 +15,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisissecret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/database/database.db'
 
-socketio = SocketIO(app)
 
 bootstrap = Bootstrap(app)
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -33,11 +31,6 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80))
     logged_in = db.Column(db.String, nullable=False)
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
@@ -47,6 +40,11 @@ class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -64,7 +62,8 @@ def login():
                 update_this.logged_in = "True"
                 db.session.commit()
                 return redirect(url_for('home'))
-        return render_template('login.html', form=form, uname_help_block="block")
+        else:
+            return render_template('login.html', form=form, uname_help_block="block")
     return render_template('login.html', form=form, uname_help_block="none", display_login="block", display_logout="none", display_signup="block")
 
 
@@ -100,20 +99,24 @@ def signup():
     try:
         if current_user.logged_in == "True":
             return render_template('signup.html', form=form, display_login="none", display_logout="block", display_signup="none", query="Hello")
+        else:
+            return render_template('signup.html', form=form, display_login="block", display_logout="none", display_signup="block")
     except:
-        return render_template('signup.html', form=form, display_login="block", display_logout="none", display_signup="block")
+        pass
 
 
 @app.route('/')
 def home():
     try:
         if current_user.logged_in == "True":
-            return render_template("home.html", display_login="none", display_logout="block", display_signup="none", query="Hello")
+            return render_template("home.html", display_login="none", display_logout="block", display_signup="none", query="Hello"+current_user.username)
+        else:
+            return render_template("home.html", display_login="block", display_logout="none", display_signup="block")
     except:
-        return render_template("home.html", display_login="block", display_logout="none", display_signup="block")
+        pass
 
 
-@app.route('/settings')
+@app.route('/settings', methods=['GET', 'POST'])
 @login_required
 def settings():
     try:
@@ -123,19 +126,14 @@ def settings():
         return render_template("settings.html", display_login="block", display_logout="none", display_signup="block")
 
 
-@app.route('/help')
+@app.route('/help', methods=['GET', 'POST'])
 def help():
     try:
         if current_user.logged_in == "True":
-            return render_template("help.html", display_login="none", display_logout="block", display_signup="none", query="Hello")
+            return render_template("help.html", display_login="none", display_logout="block", display_signup="none")
     except:
         return render_template("help.html", display_login="block", display_logout="none", display_signup="block")
 
 
-@socketio.on('listen')
-def listen(msg):
-    send(msg, broadcast=True)
-
 if __name__ == '__main__': 
-    # app.run(debug = True)
-    socketio.run(app)
+    app.run(debug = True)
