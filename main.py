@@ -113,7 +113,7 @@ def home():
         else:
             return render_template("home.html", display_login="block", display_logout="none", display_signup="block")
     except:
-        pass
+        return render_template("home.html", display_login="block", display_logout="none", display_signup="block")
 
 
 @app.route('/settings', methods=['GET', 'POST'])
